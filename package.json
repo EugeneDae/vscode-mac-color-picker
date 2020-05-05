@@ -1,0 +1,92 @@
+{
+	"name": "vscode-mac-color-picker",
+	"displayName": "macOS Color Picker",
+	"description": "Change colors in CSS format with a macOS native color picker.",
+	"version": "1.0.0",
+	"author": {
+		"name": "Eugene / Dae",
+		"email": "dae@dae.me"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://"
+	},
+	"bugs": {
+		"url": "https://"
+	},
+	"publisher": "dae",
+	"icon": "res/icon.png",
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"color",
+		"picker",
+		"css",
+		"palette",
+		"textmate"
+	],
+	"engines": {
+		"vscode": "^1.44.0"
+	},
+	"activationEvents": [
+		"onCommand:extension.macColorPicker"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.macColorPicker",
+				"title": "Open macOS Color Picker"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "macOS Color Picker",
+			"properties": {
+				"macColorPicker.lowercaseHexColors": {
+					"type": "boolean",
+					"markdownDescription": "Output hex colors in lowercase, e.g.: `#fff` instead of `#FFF`.",
+					"default": true
+				},
+
+				"macColorPicker.shortHexColors": {
+					"type": "boolean",
+					"markdownDescription": "Shorten hex colors when possible, e.g.: `#777` instead of `#777777`.",
+					"default": true
+				}
+			}
+		},
+		"keybindings": [
+			{
+				"command": "extension.macColorPicker",
+				"key": "ctrl+shift+c",
+				"mac": "cmd+shift+c"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "rm -rf out && webpack --mode production",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./"
+	},
+	"devDependencies": {
+		"@types/color-string": "^1.5.0",
+		"@types/node": "^13.11.0",
+		"@types/vscode": "^1.44.0",
+		"@typescript-eslint/eslint-plugin": "^2.30.0",
+		"@typescript-eslint/parser": "^2.30.0",
+		"applescript": "^1.0.0",
+		"color-string": "^1.5.3",
+		"eslint": "^6.8.0",
+		"ts-loader": "^7.0.2",
+		"ts-node": "^8.10.1",
+		"typescript": "^3.8.3",
+		"webpack": "^4.43.0",
+		"webpack-cli": "^3.3.11"
+	}
+}

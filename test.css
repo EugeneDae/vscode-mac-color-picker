@@ -1,0 +1,17 @@
+/* See https://github.com/Qix-/color-string/blob/master/test/basic.js */
+.element {
+    color: transparent;
+    color: blue;
+
+    color: #FFF;
+    color: #FFFA;
+    color: #FFFFFFAA;
+
+    color: rgb(200, 200, 200);
+    color: rgba(200, 60, 60, 0.3);
+
+    color: hsl(360, 100%, 50%);
+    color: hsla(360, 60%, 50%, 0.4);
+
+    color: hwb(60, 3%, 60%);
+}
