@@ -1,7 +1,7 @@
 {
 	"name": "vscode-mac-color-picker",
 	"displayName": "macOS Color Picker",
-	"description": "Change colors in CSS format with a macOS native color picker.",
+	"description": "Native macOS color picker for CSS, HTML and other uses (like in TextMate).",
 	"version": "1.0.0",
 	"author": {
 		"name": "Eugene / Dae",
@@ -10,10 +10,10 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://"
+		"url": "https://github.com/EugeneDae/vscode-mac-color-picker"
 	},
 	"bugs": {
-		"url": "https://"
+		"url": "https://github.com/EugeneDae/vscode-mac-color-picker/issues"
 	},
 	"publisher": "dae",
 	"icon": "res/icon.png",
@@ -45,26 +45,35 @@
 			"type": "object",
 			"title": "macOS Color Picker",
 			"properties": {
+				"macColorPicker.defaultColorNotation": {
+					"type": "string",
+					"markdownDescription": "Which notation to use when inserting (rather than updating) a color.",
+					"default": "hex",
+					"enum": [
+						"hex",
+						"rgb",
+						"hsl",
+						"hwb"
+					],
+					"enumDescriptions": [
+						"For example: #0000FF",
+						"For example: rgb(0, 0, 255)",
+						"For example: hsl(240, 100%, 50%)",
+						"For example: hwb(240, 0%, 0%)"
+					]
+				},
 				"macColorPicker.lowercaseHexColors": {
 					"type": "boolean",
 					"markdownDescription": "Output hex colors in lowercase, e.g.: `#fff` instead of `#FFF`.",
 					"default": true
 				},
-
 				"macColorPicker.shortHexColors": {
 					"type": "boolean",
 					"markdownDescription": "Shorten hex colors when possible, e.g.: `#777` instead of `#777777`.",
 					"default": true
 				}
 			}
-		},
-		"keybindings": [
-			{
-				"command": "extension.macColorPicker",
-				"key": "ctrl+shift+c",
-				"mac": "cmd+shift+c"
-			}
-		]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "rm -rf out && webpack --mode production",
@@ -75,12 +84,14 @@
 		"watch": "tsc -watch -p ./"
 	},
 	"devDependencies": {
+		"@types/color-convert": "^1.9.0",
 		"@types/color-string": "^1.5.0",
 		"@types/node": "^13.11.0",
 		"@types/vscode": "^1.44.0",
 		"@typescript-eslint/eslint-plugin": "^2.30.0",
 		"@typescript-eslint/parser": "^2.30.0",
 		"applescript": "^1.0.0",
+		"color-convert": "^2.0.1",
 		"color-string": "^1.5.3",
 		"eslint": "^6.8.0",
 		"ts-loader": "^7.0.2",

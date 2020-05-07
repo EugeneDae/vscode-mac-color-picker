@@ -7,3 +7,5 @@ src/**
 .gitignore
 tsconfig.json
 webpack.config.js
+res/icon.afdesign
+test.css

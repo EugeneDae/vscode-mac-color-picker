@@ -1,70 +1,76 @@
 import * as vscode from 'vscode';
 import * as colorString from 'color-string';
+import * as colorConvert from 'color-convert';
 import * as applescript from 'applescript';
 
-type Color = [number, number, number] | [number, number, number, number];
+type ColorModel = 'rgb' | 'hsl' | 'hwb';
+type AppleColor = [number, number, number];
 
-function rgb65536ToRgb256(rgb65536: Color): Color {
-    return rgb65536.map((n) => Math.round(n/257)) as Color;
-}
-
-function rgb256To65536(rgb256: Color): Color {
-    return rgb256.map((n) => n*257) as Color;
-}
-
-function showWarningMessage(msg: string): void {
-	vscode.window.showInformationMessage('macOS Color Picker: ' + msg);
+function showInformationMessage(msg: string): void {
+    vscode.window.showInformationMessage('[macOS Color Picker] ' + msg);
 }
 
 function showErrorMessage(msg: string): void {
-	vscode.window.showErrorMessage('macOS Color Picker: ' + msg);
+    vscode.window.showErrorMessage('[macOS Color Picker] ' + msg);
 }
 
-function getColorPickerScript(defaultColor: Color = [255, 0, 255]): string {
-	return `tell current application to choose color default color {${rgb256To65536(defaultColor)}}`;
+function getColorPickerScript(defaultColor: AppleColor): string {
+    return `tell current application to choose color default color {${defaultColor}}`;
 }
 
 function runScript(script: string): Promise<any> {
-	return new Promise((resolve, reject) => {
-		applescript.execString(script, (err: any, rtn: any) => {
-			if (err) {
+    return new Promise((resolve, reject) => {
+        applescript.execString(script, (err: any, rtn: any) => {
+            if (err) {
                 reject(err);
-			} else {
-				resolve(rtn);
-			}
-	   });
-	});
+            } else {
+                resolve(rtn);
+            }
+       });
+    });
 }
 
-function colorStringToHexEnhanced(color: Color) {
-	const config = vscode.workspace.getConfiguration('macColorPicker');
+function toHexEnhanced(color: colorString.Color) {
+    const config = vscode.workspace.getConfiguration('macColorPicker');
 
-	let result = colorString.to.hex(color);
+    let result = colorString.to.hex(color);
 
-	if (config.get('lowercaseHexColors')) {
-		result = result.toLowerCase();
-	}
+    if (config.get('lowercaseHexColors')) {
+        result = result.toLowerCase();
+    }
 
-	if (config.get('shortHexColors')) {
-		result = shortenHex(result);
-	}
+    if (config.get('shortHexColors')) {
+        result = shortenHex(result);
+    }
 
-	return result;
+    return result;
 }
 
-function pickColorStringOutputFunction(colorStr: string, colorDescriptor: colorString.ColorDescriptor): Function {
-	switch (colorDescriptor.model) {
+function getDefaultColorModel(): ColorModel {
+    const config = vscode.workspace.getConfiguration('macColorPicker');
+
+    switch (config.get('defaultColorNotation')) {
+		case 'hsl':
+			return 'hsl';
+		case 'hwb':
+            return 'hwb';
+        default: // hex, rgb -> rgb
+            return 'rgb';
+	}
+}
+
+function getDefaultOutputFunction(): Function {
+    const config = vscode.workspace.getConfiguration('macColorPicker');
+
+    switch (config.get('defaultColorNotation')) {
 		case 'rgb':
-			if (colorStr.startsWith('rgb')) {
-				return colorString.to.rgb;
-			}
-			return colorStringToHexEnhanced;
+			return colorString.to.rgb;
 		case 'hsl':
 			return colorString.to.hsl;
 		case 'hwb':
-			return colorString.to.hwb;
-		default:
-			return colorStringToHexEnhanced;
+            return colorString.to.hwb;
+		default: // hex -> rgb
+			return toHexEnhanced;
 	}
 }
 
@@ -85,48 +91,75 @@ function shortenHex(hex: string) {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	let disposable = vscode.commands.registerCommand('extension.macColorPicker', () => {
-		const editor = vscode.window.activeTextEditor;
+    let disposable = vscode.commands.registerCommand('extension.macColorPicker', () => {
+        const editor = vscode.window.activeTextEditor;
 
-		if (editor) {
-			const wordRange = editor.document.getWordRangeAtPosition(editor.selection.active);
-			const replaceTarget = wordRange || editor.selection;
-			const selectedText = editor.document.getText(replaceTarget);
+        if (editor) {
+            let replaceTarget : vscode.Range | vscode.Selection = editor.selection;
+            let selectedColorModel: ColorModel = getDefaultColorModel();
+            let selectedColorValue: AppleColor = [65535, 0, 65535]; // UnrealEd :)
+            let selectedColorAlpha: number = 1;
+            let outputFunction : Function = getDefaultOutputFunction();
 
-			let defColor: Color | undefined;
-			let savedAlpha: number = 1;
-			let outputFunction : Function = colorStringToHexEnhanced;
+            const selections = [
+                editor.selection, // what is actually selected (order is important)
+                editor.document.getWordRangeAtPosition(editor.selection.start) // the "word" where the cursor is
+            ];
 
-			if (selectedText) {
-				vscode.window.showInformationMessage(selectedText);
-				let selColor = colorString.get(selectedText);
+            // Loop over both selections to see if one of them contains a color recognizable by colorString
+            for (const selection of selections) {
+                if (selection !== undefined) {
+                    const selectedText = editor.document.getText(selection).trim();
+                    const selectedColorDescriptor = colorString.get(selectedText);
 
-				if (selColor !== null) {
-					// Preserve the alpha channel value because the color picker invoked via "choose color"
-					// does not have the opacity slider. See https://macscripter.net/viewtopic.php?id=47640
-					savedAlpha = selColor.value[3];
-					defColor = selColor.value.slice(0,3) as Color;
-					outputFunction = pickColorStringOutputFunction(selectedText, selColor);
-				}
-			}
+                    if (selectedColorDescriptor === null) {
+                        // colorString does not recognize a color notation in this selection
+                        if (selectedText.startsWith('rgb') ||
+                            selectedText.startsWith('hsl') ||
+                            selectedText.startsWith('hwb')) {
+                                return showInformationMessage('Please select the entire color expression.');
+                        }
+                    } else {
+                        // colorString recognized a color notation in this selection
+                        replaceTarget = selection;
+                        selectedColorModel = selectedColorDescriptor.model;
+                        selectedColorValue = colorConvert[selectedColorModel].apple([
+                            selectedColorDescriptor.value[0],
+                            selectedColorDescriptor.value[1],
+                            selectedColorDescriptor.value[2]
+                        ]);
+                        selectedColorAlpha = selectedColorDescriptor.value[3];
 
-			runScript(getColorPickerScript(defColor)).then((rtn) => {
-				editor.edit(editBuilder => {
-					let color = rgb65536ToRgb256(rtn);
-					color[3] = savedAlpha;
-					let output = outputFunction(color);
-					editBuilder.replace(replaceTarget, output);
-				});
-			}).catch((err) => {
-				if (!err.message.includes('User canceled. (-128)')) {
-					console.log(err);
-					showErrorMessage(err.message);
-				}
-			});
-		}
-	});
+                        if (selectedColorModel === 'rgb') {
+                            if (selectedText.startsWith('rgb')) {
+                                outputFunction = colorString.to.rgb;
+                            } else {
+                                outputFunction = toHexEnhanced;
+                            }
+                        } else {
+                            outputFunction = colorString.to[selectedColorModel];
+                        }
 
-	context.subscriptions.push(disposable);
+                        break;
+                    }
+                }
+            }
+
+            runScript(getColorPickerScript(selectedColorValue)).then((rtn) => {
+                editor.edit(editBuilder => {
+                    let color = colorConvert.apple[selectedColorModel](rtn);
+                    editBuilder.replace(replaceTarget, outputFunction([color[0], color[1], color[2], selectedColorAlpha]));
+                });
+            }).catch((err) => {
+                if (!err.message.includes('User canceled. (-128)')) {
+                    console.log(err);
+                    showErrorMessage(err.message);
+                }
+            });
+        }
+    });
+
+    context.subscriptions.push(disposable);
 }
 
 export function deactivate() {}

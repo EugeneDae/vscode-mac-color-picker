@@ -1,17 +1,13 @@
-/* See https://github.com/Qix-/color-string/blob/master/test/basic.js */
+/* https://htmlcolors.com/color-picker */
 .element {
     color: transparent;
-    color: blue;
-
-    color: #FFF;
-    color: #FFFA;
-    color: #FFFFFFAA;
-
-    color: rgb(200, 200, 200);
-    color: rgba(200, 60, 60, 0.3);
-
-    color: hsl(360, 100%, 50%);
-    color: hsla(360, 60%, 50%, 0.4);
-
-    color: hwb(60, 3%, 60%);
+    color: #00f;
+    color: #0000FF;
+    color: #0000FF26;
+    color: rgb(0, 0, 255);
+    color: rgba(0, 0, 255, 0.25);
+    color: hsl(240, 100%, 50%);
+    color: hsla(240, 100%, 50%, 0.25);
+    color: hsla(240, 100%, 50%, 0.25);
+    color: hwb(240, 0%, 0%);
 }
