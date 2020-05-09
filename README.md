@@ -2,7 +2,7 @@
 
 <img align="right" width="533" height="470" src="res/illustration.png">
 
-A Visual Studio Code extension that brings native macOS color picker. Supports various CSS3 color notations. Works like the “Insert Color” action in TextMate.
+Native macOS color picker in Visual Studio Code for web-development and other uses. Supports various CSS3 color notations. Works like the “Insert Color” action in TextMate.
 
 **Sorry, the extension does not work on Windows or Linux.**
 
@@ -15,7 +15,7 @@ A Visual Studio Code extension that brings native macOS color picker. Supports v
 
 ## Installation
 
-[Click **Install** on the Marketplace](https://marketplace.visualstudio.com/items?itemName=dae.vscode-mac-color-picker), or run in the command palette (Cmd-Shift-P):
+[Click **Install** on the Marketplace](https://marketplace.visualstudio.com/items?itemName=dae.vscode-mac-color-picker), or run from the command palette (Cmd-Shift-P):
 
 ```
 ext install dae.mac-color-picker
@@ -23,7 +23,7 @@ ext install dae.mac-color-picker
 
 ## Usage
 
-Run `Open macOS Color Picker` in the command palette (Cmd-Shift-P) to launch the color picker. **It is highly recommended to configure a keybinding, such as Cmd-Shift-C ([see how to do this](res/keybinding-how-to.gif))**.
+Run `Open macOS Color Picker` from the command palette (Cmd-Shift-P) to launch the color picker. **It is highly recommended to configure a keybinding, such as Cmd-Shift-C ([see how to do this](res/keybinding-how-to.gif))**.
 
 <p align="center"><img width="550" height="500" src="res/how-to.gif"></p>
 
