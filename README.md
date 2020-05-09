@@ -25,7 +25,7 @@ ext install dae.mac-color-picker
 
 Run `Open macOS Color Picker` in the command palette (Cmd-Shift-P) to launch the color picker. **It is highly recommended to configure a keybinding, such as Cmd-Shift-C ([see how to do this](res/keybinding-how-to.gif))**.
 
-<center><img width="550" height="500" src="res/how-to.gif"></center>
+<p align="center"><img width="550" height="500" src="res/how-to.gif"></p>
 
 If a color is selected, the extension will pass it into the color picker. The following notations are supported:
 - CSS keywords, for example: `transparent`, `black`, `red` (but not `currentcolor`).
@@ -43,7 +43,7 @@ If a color is selected, the extension will pass it into the color picker. The fo
 
 ## Settings
 
-```json
+```javascript
 {
     "macColorPicker.defaultColorNotation": "hex", // Which notation to use when inserting (rather than updating) a color
     "macColorPicker.lowercaseHexColors": true, // Output hex colors in lowercase, e.g.: `#fff` instead of `#FFF`
