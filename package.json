@@ -2,7 +2,7 @@
 	"name": "vscode-mac-color-picker",
 	"displayName": "macOS Color Picker",
 	"description": "Native macOS color picker for CSS, HTML and other uses (like in TextMate).",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"author": {
 		"name": "Eugene / Dae",
 		"email": "dae@dae.me"
@@ -33,6 +33,7 @@
 	"activationEvents": [
 		"onCommand:extension.macColorPicker"
 	],
+	"extensionKind": ["ui"],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
@@ -86,15 +87,15 @@
 	"devDependencies": {
 		"@types/color-convert": "^1.9.0",
 		"@types/color-string": "^1.5.0",
-		"@types/node": "^13.11.0",
-		"@types/vscode": "^1.44.0",
-		"@typescript-eslint/eslint-plugin": "^2.30.0",
-		"@typescript-eslint/parser": "^2.30.0",
+		"@types/node": "^13.13.5",
+		"@types/vscode": "^1.45.0",
+		"@typescript-eslint/eslint-plugin": "^2.31.0",
+		"@typescript-eslint/parser": "^2.31.0",
 		"applescript": "^1.0.0",
 		"color-convert": "^2.0.1",
 		"color-string": "^1.5.3",
 		"eslint": "^6.8.0",
-		"ts-loader": "^7.0.2",
+		"ts-loader": "^7.0.3",
 		"ts-node": "^8.10.1",
 		"typescript": "^3.8.3",
 		"webpack": "^4.43.0",
