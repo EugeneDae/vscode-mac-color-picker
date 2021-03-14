@@ -28,12 +28,14 @@
 		"textmate"
 	],
 	"engines": {
-		"vscode": "^1.44.0"
+		"vscode": "^1.49.0"
 	},
 	"activationEvents": [
 		"onCommand:extension.macColorPicker"
 	],
-	"extensionKind": ["ui"],
+	"extensionKind": [
+		"ui"
+	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
@@ -87,18 +89,18 @@
 	"devDependencies": {
 		"@types/color-convert": "^1.9.0",
 		"@types/color-string": "^1.5.0",
-		"@types/node": "^13.13.5",
-		"@types/vscode": "^1.45.0",
-		"@typescript-eslint/eslint-plugin": "^2.31.0",
-		"@typescript-eslint/parser": "^2.31.0",
+		"@types/node": "^13.13.23",
+		"@types/vscode": "^1.49.0",
+		"@typescript-eslint/eslint-plugin": "^2.34.0",
+		"@typescript-eslint/parser": "^2.34.0",
 		"applescript": "^1.0.0",
 		"color-convert": "^2.0.1",
 		"color-string": "^1.5.3",
 		"eslint": "^6.8.0",
-		"ts-loader": "^7.0.3",
-		"ts-node": "^8.10.1",
-		"typescript": "^3.8.3",
-		"webpack": "^4.43.0",
-		"webpack-cli": "^3.3.11"
+		"ts-loader": "^7.0.5",
+		"ts-node": "^8.10.2",
+		"typescript": "^3.9.7",
+		"webpack": "^4.44.2",
+		"webpack-cli": "^3.3.12"
 	}
 }
