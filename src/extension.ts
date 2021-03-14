@@ -151,7 +151,7 @@ export function activate(context: vscode.ExtensionContext) {
                     editBuilder.replace(replaceTarget, outputFunction([color[0], color[1], color[2], selectedColorAlpha]));
                 });
             }).catch((err) => {
-                if (!err.message.includes('User canceled. (-128)')) {
+                if (!err.message.includes('(-128)')) {
                     console.log(err);
                     showErrorMessage(err.message);
                 }
