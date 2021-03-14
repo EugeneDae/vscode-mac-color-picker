@@ -2,7 +2,7 @@
 	"name": "vscode-mac-color-picker",
 	"displayName": "macOS Color Picker",
 	"description": "Native macOS color picker for CSS, HTML and other uses (like in TextMate).",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"author": {
 		"name": "Eugene / Dae",
 		"email": "dae@dae.me"
