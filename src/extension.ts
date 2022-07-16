@@ -45,7 +45,7 @@ function toHexEnhanced(intLiteral: boolean) {
         }
     
         if (intLiteral) {
-            result = '0x' + result.substring(1);
+            result = '0x' + result.slice(1);
         }
     
         return result;
