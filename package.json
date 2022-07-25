@@ -54,12 +54,14 @@
 					"default": "hex",
 					"enum": [
 						"hex",
+						"hex int literal",
 						"rgb",
 						"hsl",
 						"hwb"
 					],
 					"enumDescriptions": [
 						"For example: #0000FF",
+						"For example: 0x0000FF",
 						"For example: rgb(0, 0, 255)",
 						"For example: hsl(240, 100%, 50%)",
 						"For example: hwb(240, 0%, 0%)"

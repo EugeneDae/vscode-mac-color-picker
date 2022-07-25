@@ -30,20 +30,26 @@ function runScript(script: string): Promise<any> {
     });
 }
 
-function toHexEnhanced(color: colorString.Color) {
-    const config = vscode.workspace.getConfiguration('macColorPicker');
+function toHexEnhanced(intLiteral: boolean) {
+    return (color: colorString.Color) => {
+        const config = vscode.workspace.getConfiguration('macColorPicker');
 
-    let result = colorString.to.hex(color);
-
-    if (config.get('lowercaseHexColors')) {
-        result = result.toLowerCase();
-    }
-
-    if (config.get('shortHexColors')) {
-        result = shortenHex(result);
-    }
-
-    return result;
+        let result = colorString.to.hex(color);
+    
+        if (config.get('lowercaseHexColors')) {
+            result = result.toLowerCase();
+        }
+    
+        if (config.get('shortHexColors')) {
+            result = shortenHex(result);
+        }
+    
+        if (intLiteral) {
+            result = '0x' + result.slice(1);
+        }
+    
+        return result;
+    };
 }
 
 function getDefaultColorModel(): ColorModel {
@@ -54,7 +60,7 @@ function getDefaultColorModel(): ColorModel {
 			return 'hsl';
 		case 'hwb':
             return 'hwb';
-        default: // hex, rgb -> rgb
+        default: // hex, 'hex int literal', rgb -> rgb
             return 'rgb';
 	}
 }
@@ -69,8 +75,12 @@ function getDefaultOutputFunction(): Function {
 			return colorString.to.hsl;
 		case 'hwb':
             return colorString.to.hwb;
+
+        case 'hex int literal': //'hex int literal' -> rgb
+            return toHexEnhanced(true);
+
 		default: // hex -> rgb
-			return toHexEnhanced;
+			return toHexEnhanced(false);
 	}
 }
 
@@ -109,7 +119,14 @@ export function activate(context: vscode.ExtensionContext) {
             // Loop over both selections to see if one of them contains a color recognizable by colorString
             for (const selection of selections) {
                 if (selection !== undefined) {
-                    const selectedText = editor.document.getText(selection).trim();
+                    let selectedText = editor.document.getText(selection).trim();
+
+                    const isIntLiteral = selectedText.startsWith('0x');
+
+                    if (isIntLiteral) {
+                        selectedText = '#' + selectedText.slice(2);
+                    }
+
                     const selectedColorDescriptor = colorString.get(selectedText);
 
                     if (selectedColorDescriptor === null) {
@@ -134,7 +151,7 @@ export function activate(context: vscode.ExtensionContext) {
                             if (selectedText.startsWith('rgb')) {
                                 outputFunction = colorString.to.rgb;
                             } else {
-                                outputFunction = toHexEnhanced;
+                                outputFunction = toHexEnhanced(isIntLiteral);
                             }
                         } else {
                             outputFunction = colorString.to[selectedColorModel];
