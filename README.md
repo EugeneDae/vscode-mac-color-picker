@@ -31,6 +31,7 @@ If a color is selected, the extension will pass it into the color picker. The fo
 - CSS keywords, for example: `transparent`, `black`, `red` (but not `currentcolor`).
 - 6 digit hex codes, for example: `#FFF`, `#563D7C`.
 - 8 digit hex codes, for example: `#563D7CAB` *(see note below)*.
+- Hex int literals, for example: `0x0000FF`.
 - rgb() / rgba() notations, for example:
     - `rgb(255, 255, 255)`
     - `rgba(255, 255, 255, 0.5)` *(see note below)*
@@ -60,6 +61,8 @@ If you have a problem or a suggestion, please open an issue on [GitHub](https://
 - Nathan Rajlich ([@TooTallNate](https://github.com/TooTallNate)) for [node-applescript](https://github.com/TooTallNate/node-applescript).
 - Josh Junon ([@Qix-](https://github.com/Qix-)) for [color-string](https://github.com/Qix-/color-string) and [color-convert](https://github.com/Qix-/color-convert).
 - Dustin Specker ([@dustinspecker](https://github.com/dustinspecker/)) for [shorten-css-hex](https://github.com/dustinspecker/shorten-css-hex).
+
+Contributors: [@azerum](https://github.com/azerum), [@7ute](https://github.com/7ute).
 
 ## License
 

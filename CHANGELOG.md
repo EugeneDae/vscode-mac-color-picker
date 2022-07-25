@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (26 July 2022)
+
+1. Support for hexadecimal int literals e.g. in Phaser game engine (thanks @azerum).
+
 ## 1.0.2 (14 March 2021)
 
 1. Do not show error message upon cancellation on a non-English OS (thanks @7ute).
