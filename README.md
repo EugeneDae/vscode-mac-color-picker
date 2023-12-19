@@ -39,6 +39,9 @@ If a color is selected, the extension will pass it into the color picker. The fo
     - `hsl(360, 100%, 50%)`
     - `hsla(360, 100%, 50%, 0.5)` *(see note below)*
 - hwb() notation, for example: `hwb(60, 3%, 60%)`
+- vec3() / vec4() notation, for example:
+    - `vec3(0.1, 0.2, 0.3)`
+    - `vec4(0.1, 0.2, 0.3, 0.4)`
 
 **Note:** the color picker currently cannot change the alpha channel value (opacity). This may change in the future releases.
 
@@ -62,7 +65,7 @@ If you have a problem or a suggestion, please open an issue on [GitHub](https://
 - Josh Junon ([@Qix-](https://github.com/Qix-)) for [color-string](https://github.com/Qix-/color-string) and [color-convert](https://github.com/Qix-/color-convert).
 - Dustin Specker ([@dustinspecker](https://github.com/dustinspecker/)) for [shorten-css-hex](https://github.com/dustinspecker/shorten-css-hex).
 
-Contributors: [@azerum](https://github.com/azerum), [@7ute](https://github.com/7ute).
+Contributors: [@azerum](https://github.com/azerum), [@7ute](https://github.com/7ute), [@lerg](https://github.com/lerg).
 
 ## License
 
